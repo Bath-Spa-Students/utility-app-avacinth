@@ -1,4 +1,4 @@
-# Welcome message
+#Welcome message
 print ("""
                                                                              █░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀
                                                                              ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄
@@ -14,7 +14,8 @@ print("""
                                                                                   █▀▄▀█ █▀▀ █▄░█ █░█
                                                                                   █░▀░█ ██▄ █░▀█ █▄█ 
       """)
-# Item's category such as Item Name, Code, Price, and Stock stored in a Nested Dictionary
+
+#Item's category such as Item Name, Code, Price, and Stock stored in a Nested Dictionary
 A_items = [
     {
         "Item_Name": "Water",
@@ -114,7 +115,7 @@ C_items = [
     }
 ]
 
-# Function to print the table of items
+#Function to print the table of items
 def print_table(items):
     header = ["Item", "Code", "Price", "Stock"]
     row_format = "{:<18} {:<18} {:<16} {:<16}"
@@ -124,17 +125,17 @@ def print_table(items):
     print("                                                          -------------------------------------------------------------------- ")
 
     for item in items:
-        # Center each row
+        #Center each row
         centered_row = row_format.format(item["Item_Name"], item["Code"], item["Price"], item["Stock"]).center(192)
         print(centered_row)
 
-# Function to print section title with separator line
+#Function to print section title with separator line
 def print_section_title(title):
     line = "-" * 68
-    formatted_title = f"{title.center(185)}\n{line.center(184)}"  #line under item label ex. drinks
+    formatted_title = f"{title.center(185)}\n{line.center(184)}" 
     print(formatted_title)
 
-# Print items in each category
+#Print items in each category
 print_section_title("𝑫 𝑹 𝑰 𝑵 𝑲 𝑺​​​​​")
 print_table(A_items)
 
@@ -144,17 +145,19 @@ print_table(B_items)
 print_section_title("𝑺 𝑾 𝑬 𝑬 𝑻 𝑺")
 print_table(C_items)
 
-# Function to start the vending machine
+#Function to start the vending machine
 def start():
+    #Color variables
     PURPLE = '\033[95m'
     BLUE = '\033[94m'
 
     while True:
-        # User input to get the selected item code
+        #User input to get the selected item code
         input_user = input(f"\nEnter the code of the product you want to buy (or 'exit' to end): ") 
-    
-        if input_user == 'exit': # The user wants to exit the vending machine
-            print("""-------------------------------------------------------------------- 
+
+        #The user wants to exit the vending machine
+        if input_user == 'exit': 
+            print ("""-------------------------------------------------------------------- 
               Thank you for using Munch Vending Machine. Have a great day!""")
             break
 
@@ -164,7 +167,8 @@ def start():
                 selected_item = item
                 break
 
-        if selected_item['Stock'] == 0: # The user selected an item that is out of stock
+        #The user selected an item that is out of stock
+        if selected_item['Stock'] == 0: 
             print("""-------------------------------------------------------------------------
               
 Sorry, this item is out of stock. Please choose another product.
@@ -186,9 +190,10 @@ Sorry, this item is out of stock. Please choose another product.
         print(f"\n{PURPLE}{selected_item['Item_Name']} has been dispensed\033[0m")
         print ("\nYour remaining balance is AED", change)
 
-        input("\nPress Enter...")
+        #Pressing 'Enter' to reveal the suggested items
+        input("\nPress Enter...") 
 
-        # Suggestions for each item
+        #Suggestions for each item
         if selected_item['Item_Name'] == "Coke":
             suggestion_item = B_items[0]
             print(f"""
@@ -305,7 +310,7 @@ Sorry, this item is out of stock. Please choose another product.
 
         insert_cash2 = 0
 
-        if suggestion == 'yes':
+        if suggestion == 'yes':  #User said yes to buying the suggested item 
             #If the balance of money is not enough
             if change < suggestion_item['Price']: 
                 insert_cash2 = float(input(f"\nYou need to insert {suggestion_item['Price'] - change} AED more: "))
@@ -313,7 +318,8 @@ Sorry, this item is out of stock. Please choose another product.
                 if change + insert_cash2 >= suggestion_item['Price']:
                     print("\n--------------------------------------------------")
                     print(f"\n{PURPLE}{suggestion_item['Item_Name']} has been dispensed\033[0m")
-                
+
+                    #Calculating the final balance
                     yes_suggestion = ((change + insert_cash2) - suggestion_item['Price'])
                     print(f"\nPlease get your remaining balance of AED", yes_suggestion)
 
@@ -322,12 +328,14 @@ Sorry, this item is out of stock. Please choose another product.
                 print("\n--------------------------------------------------")
                 print(f"\n{PURPLE}{suggestion_item['Item_Name']} has been dispensed\033[0m")
 
+                #Calculating the final balance
                 yes_suggestion = ((change + insert_cash2) - suggestion_item['Price'])
                 print(f"\nPlease get your remaining balance of AED", yes_suggestion)
        
         #The user said no to buying the suggested item
         elif suggestion == 'no':
             print("\n--------------------------------------------------")
+            #Calculating the final balance
             no_suggestion = (change + insert_cash2)
             print(f"\nPlease get your remaining balance of AED", no_suggestion)
 
