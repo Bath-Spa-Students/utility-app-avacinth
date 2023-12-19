@@ -1,13 +1,20 @@
-txt = 'Welcome to Munch Vending Machine'
-print(txt.center(185))
+# Welcome message
+print ("""
+                                                                             █░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀
+                                                                             ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄
+       
+                                                                                            𝐭𝐨   
+                                                                             
+                                                  █▀▄▀█ █░█ █▄░█ █▀▀ █░█   █░█ █▀▀ █▄░█ █▀▄ █ █▄░█ █▀▀   █▀▄▀█ ▄▀█ █▀▀ █░█ █ █▄░█ █▀▀
+                                                  █░▀░█ █▄█ █░▀█ █▄▄ █▀█   ▀▄▀ ██▄ █░▀█ █▄▀ █ █░▀█ █▄█   █░▀░█ █▀█ █▄▄ █▀█ █ █░▀█ ██▄""")
 
 print("""
-                                                                                ░█▀▄▀█ ░█▀▀▀ ░█▄─░█ ░█─░█ 
-                                                                                ░█░█░█ ░█▀▀▀ ░█░█░█ ░█─░█ 
-                                                                                ░█──░█ ░█▄▄▄ ░█──▀█ ─▀▄▄▀
-      
+                                                  -----------------------------------------------------------------------------------   
+                                          
+                                                                                  █▀▄▀█ █▀▀ █▄░█ █░█
+                                                                                  █░▀░█ ██▄ █░▀█ █▄█ 
       """)
-
+# Item's category such as Item Name, Code, Price, and Stock stored in a Nested Dictionary
 A_items = [
     {
         "Item_Name": "Water",
@@ -107,6 +114,7 @@ C_items = [
     }
 ]
 
+# Function to print the table of items
 def print_table(items):
     header = ["Item", "Code", "Price", "Stock"]
     row_format = "{:<18} {:<18} {:<16} {:<16}"
@@ -120,12 +128,13 @@ def print_table(items):
         centered_row = row_format.format(item["Item_Name"], item["Code"], item["Price"], item["Stock"]).center(192)
         print(centered_row)
 
-# Vending Machine Label
+# Function to print section title with separator line
 def print_section_title(title):
     line = "-" * 68
     formatted_title = f"{title.center(185)}\n{line.center(184)}"  #line under item label ex. drinks
     print(formatted_title)
 
+# Print items in each category
 print_section_title("𝑫 𝑹 𝑰 𝑵 𝑲 𝑺​​​​​")
 print_table(A_items)
 
@@ -135,170 +144,201 @@ print_table(B_items)
 print_section_title("𝑺 𝑾 𝑬 𝑬 𝑻 𝑺")
 print_table(C_items)
 
-while True:
+# Function to start the vending machine
+def start():
     PURPLE = '\033[95m'
-    input_user = input(f"\nEnter the code of the product you want to buy (or 'exit' to end): ")
-    
-    if input_user == 'exit':
-        print("""-------------------------------------------------------------------- 
-              Thank you for using Munch Vending Machine. Have a great day!""")
-        break
+    BLUE = '\033[94m'
 
-    selected_item = None
-    for item in A_items + B_items + C_items:
-        if item['Code'] == input_user:
-            selected_item = item
+    while True:
+        # User input to get the selected item code
+        input_user = input(f"\nEnter the code of the product you want to buy (or 'exit' to end): ") 
+    
+        if input_user == 'exit': # The user wants to exit the vending machine
+            print("""-------------------------------------------------------------------- 
+              Thank you for using Munch Vending Machine. Have a great day!""")
             break
 
-    if selected_item['Stock'] == 0:
-        print("""-------------------------------------------------------------------------
+        selected_item = None
+        for item in A_items + B_items + C_items:
+            if item['Code'] == input_user:
+                selected_item = item
+                break
+
+        if selected_item['Stock'] == 0: # The user selected an item that is out of stock
+            print("""-------------------------------------------------------------------------
               
 Sorry, this item is out of stock. Please choose another product.
-              """)
-        continue
-    print ("-------------------------------------------------------------------------")
-    print(f"\nYou have selected: {selected_item['Item_Name']}")
-    print(f"Price: {selected_item['Price']}")
-    print(f"Stock: {selected_item['Stock']}")
-    break
+            """)
+            continue
+        
+        print ("-------------------------------------------------------------------------")
+        print(f"\nYou have selected: {selected_item['Item_Name']}")
+        print(f"Price: {selected_item['Price']}")
+        print(f"Stock: {selected_item['Stock']}")
 
-insert_cash = float(input(f"\nPlease insert {selected_item['Price']}: "))
+        # Get user input for cash insertion
+        insert_cash = float(input(f"\nPlease insert {selected_item['Price']}: "))  
 
-import sys
+        import sys
+        # Calculate change
+        change = insert_cash - selected_item['Price']
+        print("\n--------------------------------------------------")
+        print(f"\n{PURPLE}{selected_item['Item_Name']} has been dispensed\033[0m")
+        print ("\nYour remaining balance is AED", change)
 
-change = insert_cash - selected_item['Price']
-print("\n-------------------------------------------------------------------------")
-print("\n" + selected_item['Item_Name'] + " has been dispensed")
-print ("\nYour remaining balance is AED", change)
+        input("\nPress Enter...")
 
-input("\nPress Enter...")
-
-# Suggestions in each items
-
-if selected_item['Item_Name'] == "Coke":
-    suggestion_item = B_items[0]
-    print(f"""
+        # Suggestions for each item
+        if selected_item['Item_Name'] == "Coke":
+            suggestion_item = B_items[0]
+            print(f"""
 --------------------------------------------------
 
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Milk":
-    suggestion_item = B_items[4]
-    print(f"""
---------------------------------------------------
-          
-{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
-
-elif selected_item['Item_Name'] == "Apple Juice":
-    suggestion_item = B_items[1]
-    print(f"""
---------------------------------------------------
-{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
-
-elif selected_item['Item_Name'] == "Coconut Juice":
-    suggestion_item = B_items[3]
-    print(f"""
---------------------------------------------------
-{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
-
-elif selected_item['Item_Name'] == "Lay's Classic":
-    suggestion_item = A_items[1]
-    print(f"""
+        elif selected_item['Item_Name'] == "Milk":
+            suggestion_item = B_items[4]
+            print(f"""
 --------------------------------------------------
           
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Popcorn":
-    suggestion_item = A_items[3]
-    print(f"""
+        elif selected_item['Item_Name'] == "Apple Juice":
+            suggestion_item = B_items[1]
+            print(f"""
 --------------------------------------------------
-{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Cheetos":
-    suggestion_item = A_items[1]
-    print(f"""
+{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+
+        elif selected_item['Item_Name'] == "Coconut Juice":
+            suggestion_item = B_items[3]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Doritos":
-    suggestion_item = A_items[4]
-    print(f"""
+        elif selected_item['Item_Name'] == "Lay's Classic":
+            suggestion_item = A_items[1]
+            print(f"""
 --------------------------------------------------
+          
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"This item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Oreo":
-    suggestion_item = A_items[4]
-    print(f"""
+        elif selected_item['Item_Name'] == "Popcorn":
+            suggestion_item = A_items[3]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Resses":
-    suggestion_item = A_items[1]
-    print(f"""
+        elif selected_item['Item_Name'] == "Cheetos":
+            suggestion_item = A_items[1]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Hersheys":
-    suggestion_item = A_items[2]
-    print(f"""
+        elif selected_item['Item_Name'] == "Doritos":
+            suggestion_item = A_items[4]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Snickers":
-    suggestion_item = B_items[1]
-    print(f"""
+        elif selected_item['Item_Name'] == "Oreo":
+            suggestion_item = A_items[4]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Galaxy":
-    suggestion_item = A_items[1]
-    print(f"""
+        elif selected_item['Item_Name'] == "Resses":
+            suggestion_item = A_items[1]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-elif selected_item['Item_Name'] == "Twix":
-    suggestion_item = A_items[1]
-    print(f"""
+        elif selected_item['Item_Name'] == "Hersheys":
+            suggestion_item = A_items[2]
+            print(f"""
 --------------------------------------------------
+                  
 {selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
-    print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-suggestion = input("\nDo you want to buy this item? (yes/no): ")
+        elif selected_item['Item_Name'] == "Snickers":
+            suggestion_item = B_items[1]
+            print(f"""
+--------------------------------------------------
+                  
+{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-insert_cash2 = 0
+        elif selected_item['Item_Name'] == "Galaxy":
+            suggestion_item = A_items[1]
+            print(f"""
+--------------------------------------------------
+                  
+{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-if change < suggestion_item['Price']: # If the balamce money is not enough
-    insert_cash2 = float(input(f"\nYou need to insert {suggestion_item['Price'] - change} AED more: "))
-    if change + insert_cash2 >= suggestion_item['Price']:
-        print("--------------------------------------------------")
-        print(f"\n{suggestion_item['Item_Name']} has been dispensed")
-        print(f"\nYour remaining balance is AED {(change + insert_cash2) - suggestion_item['Price']}")
-else: 
-    print("--------------------------------------------------")
-    print(f"\n{suggestion_item['Item_Name']} has been dispensed")
-    print(f"\nYour remaining balance is AED {(change + insert_cash2) - suggestion_item['Price']}")
+        elif selected_item['Item_Name'] == "Twix":
+            suggestion_item = A_items[1]
+            print(f"""
+--------------------------------------------------
+                  
+{selected_item['Item_Name']} goes best with {suggestion_item['Item_Name']}!""")
+            print(f"\nThis item is {suggestion_item['Price']} AED and has {suggestion_item['Stock']} in stock")
 
-Yes_No = input("\nDo you want to buy anything else? ")
+        suggestion = input("\nDo you want to buy this item? (yes/no): ")
 
-if Yes_No == 'no':
-    print("--------------------------------------------------")
-    print(f"\nHere is your {(change + insert_cash2) - suggestion_item['Price']} AED change")
+        insert_cash2 = 0
 
-    print("\nThank you for using Munch Vending Machine. Have a great day!")
-    sys.exit()  # Exit the program
+        if suggestion == 'yes':
+            #If the balance of money is not enough
+            if change < suggestion_item['Price']: 
+                insert_cash2 = float(input(f"\nYou need to insert {suggestion_item['Price'] - change} AED more: "))
+                #If the balance of money meets the needed item price
+                if change + insert_cash2 >= suggestion_item['Price']:
+                    print("\n--------------------------------------------------")
+                    print(f"\n{PURPLE}{suggestion_item['Item_Name']} has been dispensed\033[0m")
+                
+                    yes_suggestion = ((change + insert_cash2) - suggestion_item['Price'])
+                    print(f"\nPlease get your remaining balance of AED", yes_suggestion)
 
-elif Yes_No == 'yes':
-    input_user2 = input("Enter the Code of the item you wish to buy: ")
+            #If the balance of money is equal to or more than the suggested item price
+            elif change >= suggestion_item['Price']:
+                print("\n--------------------------------------------------")
+                print(f"\n{PURPLE}{suggestion_item['Item_Name']} has been dispensed\033[0m")
+
+                yes_suggestion = ((change + insert_cash2) - suggestion_item['Price'])
+                print(f"\nPlease get your remaining balance of AED", yes_suggestion)
+       
+        #The user said no to buying the suggested item
+        elif suggestion == 'no':
+            print("\n--------------------------------------------------")
+            no_suggestion = (change + insert_cash2)
+            print(f"\nPlease get your remaining balance of AED", no_suggestion)
+
+        # Asking the user whether or not to repeat the purchase
+        print(f"\n{BLUE}Do you want to buy anything else? \033[0m", end='')
+        repeat = input()
+
+        if repeat == 'no':
+            print("\n--------------------------------------------------")
+            print("\nThank you for using Munch Vending Machine. Have a great day!")
+            sys.exit()  # Exit the program
+
+# Starting the vending machine again because the user said yes to buying more
+start()
